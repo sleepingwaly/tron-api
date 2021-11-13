@@ -168,22 +168,23 @@ class TronManager
      */
     public function request($url, $params = [], $method = 'post')
     {
-        $split = explode('/', $url);
-        if(in_array($split[0], ['walletsolidity', 'walletextension'])) {
-            if(in_array($split[1], ['gettransactionsfromthis','gettransactionstothis'])){
-                $response = $this->solidityNode()->request($url, $params, 'get');
-            }else{
-                $response = $this->solidityNode()->request($url, $params, $method);
-            }
-        } elseif(in_array($split[0], ['event'])) {
-            $response = $this->eventServer()->request($url, $params, 'get');
-        } elseif (in_array($split[0], ['trx-sign'])) {
-            $response = $this->signServer()->request($url, $params, 'post');
-        } elseif(in_array($split[0], ['api'])) {
-            $response = $this->explorer()->request($url, $params, 'get');
-        }else {
-            $response = $this->fullNode()->request($url, $params, $method);
-        }
+        // $split = explode('/', $url);
+        // if(in_array($split[0], ['walletsolidity', 'walletextension'])) {
+        //     if(in_array($split[1], ['gettransactionsfromthis','gettransactionstothis'])){
+        //         $response = $this->solidityNode()->request($url, $params, 'get');
+        //     }else{
+        //         $response = $this->solidityNode()->request($url, $params, $method);
+        //     }
+        // } elseif(in_array($split[0], ['event'])) {
+        //     $response = $this->eventServer()->request($url, $params, 'get');
+        // } elseif (in_array($split[0], ['trx-sign'])) {
+        //     $response = $this->signServer()->request($url, $params, 'post');
+        // } elseif(in_array($split[0], ['api'])) {
+        //     $response = $this->explorer()->request($url, $params, 'get');
+        // }else {
+        //     $response = $this->fullNode()->request($url, $params, $method);
+        // }
+        $response = $this->solidityNode()->request($url, $params, $method);
 
         return $response;
     }

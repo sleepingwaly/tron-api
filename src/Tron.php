@@ -515,6 +515,13 @@ class Tron implements TronInterface
         ]);
     }
 
+    public function getAccountTransactions(string $address, array $params) {
+        
+
+        return $this->manager->request("accounts/{$address}/transactions", $params, 'GET');
+
+    }
+
     /**
      * Query the list of transactions received by an address
      *
