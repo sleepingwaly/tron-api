@@ -184,6 +184,10 @@ class TronManager
         // }else {
         //     $response = $this->fullNode()->request($url, $params, $method);
         // }
+        if($method == 'GET'){
+            $url .= '?'.http_build_query($params);
+            $params = [];
+        }
         $response = $this->solidityNode()->request($this->version.'/'.$url, $params, $method);
 
         return $response;
