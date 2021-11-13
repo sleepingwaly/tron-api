@@ -32,7 +32,6 @@ class TronManager
         'explorer'      =>  [],
         'signServer'    =>  []
     ];
-    protected $version = 'v1';
     /**
      * Status Page
      *
@@ -50,10 +49,9 @@ class TronManager
      * @param $providers
      * @throws Exception\TronException
      */
-    public function __construct($tron, $providers, $version)
+    public function __construct($tron, $providers)
     {
         $this->providers = $providers;
-        $this->version = $version;
         foreach ($providers as $key => $value)
         {
             //Do not skip the supplier is empty
@@ -168,28 +166,18 @@ class TronManager
      */
     public function request($url, $params = [], $method = 'post')
     {
-        // $split = explode('/', $url);
-        // if(in_array($split[0], ['walletsolidity', 'walletextension'])) {
-        //     if(in_array($split[1], ['gettransactionsfromthis','gettransactionstothis'])){
-        //         $response = $this->solidityNode()->request($url, $params, 'get');
-        //     }else{
-        //         $response = $this->solidityNode()->request($url, $params, $method);
-        //     }
-        // } elseif(in_array($split[0], ['event'])) {
-        //     $response = $this->eventServer()->request($url, $params, 'get');
-        // } elseif (in_array($split[0], ['trx-sign'])) {
-        //     $response = $this->signServer()->request($url, $params, 'post');
-        // } elseif(in_array($split[0], ['api'])) {
-        //     $response = $this->explorer()->request($url, $params, 'get');
-        // }else {
-        //     $response = $this->fullNode()->request($url, $params, $method);
-        // }
-        if($method == 'GET'){
-            $url .= '?'.http_build_query($params);
-            $params = [];
+        $split = explode('/', $url);
+        if(in_array($split[0], ['walletsolidity', 'walletextension'])) {
+            $response = $this->solidityNode()->request($url, $params, $method);
+        } elseif(in_array($split[0], ['event'])) {
+            $response = $this->eventServer()->request($url, $params, 'get');
+        } elseif (in_array($split[0], ['trx-sign'])) {
+            $response = $this->signServer()->request($url, $params, 'post');
+        } elseif(in_array($split[0], ['api'])) {
+            $response = $this->explorer()->request($url, $params, 'get');
+        }else {
+            $response = $this->fullNode()->request($url, $params, $method);
         }
-        $response = $this->solidityNode()->request($this->version.'/'.$url, $params, $method);
-
         return $response;
     }
 

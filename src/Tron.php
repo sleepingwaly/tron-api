@@ -510,43 +510,47 @@ class Tron implements TronInterface
      */
     public function getTransactionInfo(string $transactionID): array
     {
-        return $this->manager->request('walletsolidity/gettransactioninfobyid', [
+        return $this->manager->request('wallet/gettransactioninfobyid', [
             'value' =>  $transactionID
         ]);
     }
 
-    public function getAccountTransactions(string $address, array $params) {
-        return $this->manager->request("accounts/{$address}/transactions", $params, 'GET');
-    }
-
-    /**
-     * Query the list of transactions received by an address
-     *
-     * @param string $address
-     * @param int $limit
-     * @param int $offset
-     * @return array
-     * @throws TronException
-     */
-    public function getTransactionsToAddress(string $address, int $limit = 30, int $offset = 0)
+    public function getAccountTransactions(string $address, array $params=[])
     {
-        return $this->getTransactionsRelated($address,'to', $limit, $offset);
+        return $this->manager->request("v1/accounts/{$address}/transactions", $params, 'GET');
     }
 
-    /**
-     * Query the list of transactions sent by an address
-     *
-     * @param string $address
-     * @param int $limit
-     * @param int $offset
-     * @return array
-     * @throws TronException
-     */
-    public function getTransactionsFromAddress(string $address, int $limit = 30, int $offset = 0)
+    public function accounts(string $address, array $params=[])
     {
-        return $this->getTransactionsRelated($address,'from', $limit, $offset);
+        # code...v1/accounts/{address}
+        return $this->manager->request("v1/accounts/{$address}", $params, 'GET');
     }
+    public function solidityGetNowBlock(bool $visible = true)
+    {
+        $response = $this->manager->request('walletsolidity/getnowblock', [
+            'visible'   =>  boolval($visible)
+        ]);
 
+        if (empty($response)) {
+            throw new TronException('Block not found');
+        }
+        return $response;
+    }
+    public function solidityGetBlockByNum(int $blockID)
+    {
+        if(!is_integer($blockID) || $blockID < 0) {
+            throw new TronException('Invalid block number provided');
+        }
+
+        $response = $this->manager->request('walletsolidity/getblockbynum', [
+            'num'   =>  intval($blockID)
+        ]);
+
+        if (empty($response)) {
+            throw new TronException('Block not found');
+        }
+        return $response;
+    }
     /**
      * Query information about an account
      *
@@ -558,7 +562,7 @@ class Tron implements TronInterface
     {
         $address = (!is_null($address) ? $this->toHex($address) : $this->address['hex']);
 
-        return $this->manager->request('walletsolidity/getaccount', [
+        return $this->manager->request('wallet/getaccount', [
             'address'   =>  $address
         ]);
     }
@@ -630,38 +634,7 @@ class Tron implements TronInterface
         ]);
     }
 
-    /**
-     * Getting data in the "from","to" directions
-     *
-     * @param string $address
-     * @param string $direction
-     * @param int $limit
-     * @param int $offset
-     * @return array
-     * @throws TronException
-     */
-    public function getTransactionsRelated(string $address, string $direction = 'to', int $limit = 30, int $offset = 0)
-    {
-        if(!in_array($direction, ['to', 'from'])) {
-            throw new TronException('Invalid direction provided: Expected "to", "from"');
-        }
-
-        if(!is_integer($limit) || $limit < 0 || ($offset && $limit < 1)) {
-            throw new TronException('Invalid limit provided');
-        }
-
-        if(!is_integer($offset) || $offset < 0) {
-            throw new TronException('Invalid offset provided');
-        }
-
-        $response = $this->manager->request(sprintf('walletextension/gettransactions%sthis', $direction), [
-            'account'   =>  ['address' => $this->toHex($address)],
-            'limit'     =>  $limit,
-            'offset'    =>  $offset
-        ]);
-
-        return array_merge($response, ['direction' => $direction]);
-    }
+    
 
     /**
      * Count all transactions on the network
