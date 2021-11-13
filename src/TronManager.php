@@ -170,7 +170,11 @@ class TronManager
     {
         $split = explode('/', $url);
         if(in_array($split[0], ['walletsolidity', 'walletextension'])) {
-            $response = $this->solidityNode()->request($url, $params, $method);
+            if(in_array($split[1], ['gettransactionsfromthis','gettransactionstothis'])){
+                $response = $this->solidityNode()->request($url, $params, 'get');
+            }else{
+                $response = $this->solidityNode()->request($url, $params, $method);
+            }
         } elseif(in_array($split[0], ['event'])) {
             $response = $this->eventServer()->request($url, $params, 'get');
         } elseif (in_array($split[0], ['trx-sign'])) {
