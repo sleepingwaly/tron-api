@@ -127,7 +127,7 @@ class Tron implements TronInterface
             'solidityNode'  =>  $solidityNode,
             'eventServer'   =>  $eventServer,
             'signServer'    =>  $signServer,
-        ]));
+        ], 'v1'));
 
         $this->transactionBuilder = new TransactionBuilder($this);
     }
@@ -516,10 +516,7 @@ class Tron implements TronInterface
     }
 
     public function getAccountTransactions(string $address, array $params) {
-        
-
         return $this->manager->request("accounts/{$address}/transactions", $params, 'GET');
-
     }
 
     /**

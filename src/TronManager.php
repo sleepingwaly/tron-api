@@ -32,7 +32,7 @@ class TronManager
         'explorer'      =>  [],
         'signServer'    =>  []
     ];
-
+    protected $version = 'v1';
     /**
      * Status Page
      *
@@ -50,10 +50,10 @@ class TronManager
      * @param $providers
      * @throws Exception\TronException
      */
-    public function __construct($tron, $providers)
+    public function __construct($tron, $providers, $version)
     {
         $this->providers = $providers;
-
+        $this->version = $version;
         foreach ($providers as $key => $value)
         {
             //Do not skip the supplier is empty
@@ -184,7 +184,7 @@ class TronManager
         // }else {
         //     $response = $this->fullNode()->request($url, $params, $method);
         // }
-        $response = $this->solidityNode()->request($url, $params, $method);
+        $response = $this->solidityNode()->request($this->version.'/'.$url, $params, $method);
 
         return $response;
     }
