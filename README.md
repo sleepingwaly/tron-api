@@ -34,7 +34,7 @@ try {
 }
 
 
-$this->setAddress('..');
+$tron->setAddress('..');
 //Balance
 $tron->getBalance(null, true);
 
