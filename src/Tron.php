@@ -517,7 +517,8 @@ class Tron implements TronInterface
 
     public function getAccountTransactions(string $address, array $params=[])
     {
-        return $this->manager->request("v1/accounts/{$address}/transactions", $params, 'GET');
+        $param_query = '?'.http_build_query($params);
+        return $this->manager->request("v1/accounts/{$address}/transactions".$param_query, [], 'GET');
     }
 
     public function accounts(string $address, array $params=[])
