@@ -515,10 +515,11 @@ class Tron implements TronInterface
         ]);
     }
 
-    public function getAccountTransactions(string $address, array $params=[])
+    public function getAccountTransactions(string $address, array $params=[], bool $isTrc20 = false)
     {
         $param_query = '?'.http_build_query($params);
-        return $this->manager->request("v1/accounts/{$address}/transactions".$param_query, [], 'GET');
+        $trc20 = $isTrc20?'/trc20':'';
+        return $this->manager->request("v1/accounts/{$address}/transactions".$trc20.$param_query, [], 'GET');
     }
 
     public function accounts(string $address, array $params=[])
