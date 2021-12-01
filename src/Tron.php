@@ -370,7 +370,7 @@ class Tron implements TronInterface
         }
         $param_query = '?'.http_build_query($params);
 
-        return $this->manager->request("/v1/contract/{$contractAddress}/events{$param_query}",[],'GET');
+        return $this->manager->request("/v1/contracts/{$contractAddress}/events{$param_query}",[],'GET');
     }
 
     /**
