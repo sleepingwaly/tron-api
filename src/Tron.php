@@ -360,6 +360,18 @@ class Tron implements TronInterface
         return $this->manager->request("event/contract/{$routeParams}?since={$sinceTimestamp}");
     }
 
+    public function getContractEvents($contractAddress, $params)
+    {
+        if (!$this->isValidProvider($this->manager->eventServer())) {
+            throw new TronException('No event server configured');
+        }
+        if(!$contractAddress) {
+            throw new TronException('Requires a contract address');
+        }
+        $param_query = '?'.http_build_query($params);
+
+        return $this->manager->request("/contract/{$contractAddress}/events{$param_query}",[],'GET');
+    }
 
     /**
      * Will return all events within a transactionID.
