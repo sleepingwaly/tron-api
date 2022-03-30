@@ -20,16 +20,17 @@
 
     "require": {
         "php": "^7.2|^7.4|^8.0",
+        "ext-bcmath": "*",
+        "ext-json": "*",
         "comely-io/data-types": "^1.0",
         "guzzlehttp/guzzle": "^7.0",
-        "web3p/web3.php": "*",
         "kornrunner/secp256k1": "^0.1.2",
         "simplito/elliptic-php": "^1.0",
-        "ext-json": "*",
-        "ext-bcmath": "*"
+        "web3p/web3.php": "dev-master"
     },
 
     "require-dev": {
+        "laravel/sail": "^1.13",
         "phpunit/phpunit": "^6.0"
     },
     "autoload": {
