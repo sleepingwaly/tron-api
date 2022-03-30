@@ -19,10 +19,10 @@
     ],
 
     "require": {
-        "php": ">=7.2",
+        "php": "^7.2|^7.4|^8.0",
         "comely-io/data-types": "^1.0",
         "guzzlehttp/guzzle": "^7.0",
-        "iexbase/web3.php": "^2.0.1",
+        "web3p/web3.php": "*",
         "kornrunner/secp256k1": "^0.1.2",
         "simplito/elliptic-php": "^1.0",
         "ext-json": "*",
